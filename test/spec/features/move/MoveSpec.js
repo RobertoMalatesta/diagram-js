@@ -12,7 +12,7 @@ var modelingModule = require('../../../../lib/features/modeling'),
 
 describe('features/move - Move', function() {
 
-  beforeEach(bootstrapDiagram({ modules: [ modelingModule, moveModule, rulesModule ] }));
+  beforeEach(bootstrapDiagram({ modules: [ moveModule, rulesModule, modelingModule ] }));
 
   var Event;
 
