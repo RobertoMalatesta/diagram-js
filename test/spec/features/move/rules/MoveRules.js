@@ -18,6 +18,20 @@ module.exports = MoveRules;
 MoveRules.prototype.init = function() {
 
   this.addRule('shapes.move', function(context) {
+    var shapes = context.shapes,
+        host;
+
+    if (shapes.length === 1 && (host = shapes[0].host)) {
+
+      if (host.id === 'child') {
+        return 'detach';
+      } else {
+        return false;
+      }
+    }
+  });
+
+  this.addRule('shapes.move', function(context) {
     var target = context.newParent,
         shapes = context.shapes;
 

@@ -105,7 +105,7 @@ describe('features/modeling - create shape', function() {
   });
 
 
-  describe('attachment basics', function() {
+  describe('attachment - basics', function() {
 
     beforeEach(inject(function(canvas, elementFactory, modeling) {
       childShape = elementFactory.createShape({
@@ -177,7 +177,7 @@ describe('features/modeling - create shape', function() {
 
   });
 
-  describe('multiple attachers', function () {
+  describe('attachment - multiple attachers', function () {
 
     beforeEach(inject(function(canvas, elementFactory, modeling) {
 

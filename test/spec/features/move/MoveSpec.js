@@ -27,7 +27,7 @@ describe('features/move - Move', function() {
   }));
 
 
-  var rootShape, parentShape, childShape, childShape2, connection;
+  var rootShape, parentShape, childShape, childShape2, connection, attacher, host;
 
   beforeEach(inject(function(elementFactory, canvas) {
 
@@ -192,6 +192,49 @@ describe('features/move - Move', function() {
       // then
       expect(childShape.x).to.eql(140);
       expect(childShape.y).to.eql(210);
+    }));
+
+  });
+
+  describe('attachment - moving', function () {
+
+    beforeEach(inject(function(canvas, modeling, elementFactory) {
+      host = elementFactory.createShape({
+        id: 'host',
+        x: 500, y: 100, width: 100, height: 100
+      });
+
+      canvas.addShape(host, rootShape);
+
+      attacher = elementFactory.createShape({
+        id: 'attacher',
+        x: 0, y: 0, width: 50, height: 50
+      });
+
+      modeling.createShape(attacher, { x: 600, y: 100 }, host, true);
+    }));
+
+    it('should move attacher along with host', inject(function(move, dragging) {
+
+      // when
+      move.start(Event.create({ x: 550, y: 150 }), host);
+
+      dragging.move(Event.create({ x: 675, y: 275 }));
+      dragging.end();
+
+      expect(attacher.x).to.equal(700);
+      expect(attacher.y).to.equal(200);
+    }));
+
+    it('should move attacher along with host', inject(function(move, dragging) {
+      // when
+      move.start(Event.create({ x: 625, y: 125 }), attacher);
+
+      dragging.move(Event.create({ x: 700, y: 275 }));
+      dragging.end();
+
+      // expect(attacher.x).to.equal(700);
+      // expect(attacher.y).to.equal(200);
     }));
 
   });

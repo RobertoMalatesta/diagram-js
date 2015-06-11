@@ -17,7 +17,7 @@ describe('features/modeling - move shape', function() {
   beforeEach(bootstrapDiagram({ modules: [ modelingModule ] }));
 
 
-  var rootShape, parentShape, parentShape2, childShape, childShape2, connection;
+  var rootShape, parentShape, parentShape2, childShape, childShape2, connection, attacher;
 
   beforeEach(inject(function(elementFactory, canvas) {
 
@@ -297,6 +297,40 @@ describe('features/modeling - move shape', function() {
       // then
       expect(childShape.parent).to.equal(parentShape2);
       expect(childShape2.parent).to.equal(parentShape2);
+    }));
+  });
+
+  describe.only('move attached shapes', function () {
+
+    beforeEach(inject(function(elementFactory, modeling) {
+
+      attacher = elementFactory.createShape({
+        id: 'attacher',
+        x: 400, y: 110, width: 50, height: 50
+      });
+
+      modeling.createShape(attacher, { x: 400, y: 110 }, parentShape, true);
+    }));
+
+    it('should unset attachment', inject(function(modeling) {
+
+      // when
+      modeling.moveShapes([ parentShape, attacher ], { x: 50, y: 50 }, rootShape, {}, 'detach');
+
+      // then
+      expect(attacher.host).to.equal(parentShape);
+    }));
+
+
+    it('should set attachment on undo', inject(function(modeling, commandStack) {
+
+      // when
+      modeling.moveShapes([ parentShape, attacher  ], { x: 50, y: 50 }, rootShape, {}, 'detach');
+
+      commandStack.undo();
+
+      // then
+      expect(attacher.host).to.not.exist;
     }));
   });
 });

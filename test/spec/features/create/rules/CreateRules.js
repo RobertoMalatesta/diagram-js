@@ -16,13 +16,21 @@ module.exports = CreateRules;
 
 
 CreateRules.prototype.init = function() {
-    this.addRule('shape.create', function(context) {
-        var parent = context.parent;
+  this.addRule('shape.create', function(context) {
+    var parent = context.parent;
 
-        if (/child/.test(parent.id)) {
-            return false;
-        }
+    if (/child/.test(parent.id)) {
+      return 'attach';
+    }
 
-        return true;
-    });
+    if (/parent/.test(parent.id)) {
+      return 'create';
+    }
+
+    if (context.source) {
+      return true;
+    }
+
+    return false;
+  });
 };
